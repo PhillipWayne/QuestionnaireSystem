@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>行企评学系统</title>
+    <link rel="stylesheet" href="../Styles/pintuer.css">
+    <link rel="stylesheet" href="../Styles/admin.css">
+    <style type="text/css">
+        .button
+        {
+            padding: 10px 15px;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel admin-panel">
+        <div class="panel-head" id="add">
+            <strong><span class="icon-pencil-square-o"></span>增加专业</strong>
+        </div>
+        <div class="body-content">
+            <form class="form-x">
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        专业名称：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="pname" placeholder="请输入专业名称"
+                        data-validate="required:请输入专业名称" />
+                    <input type="hidden" id="pid" name="pid" />
+                    <div class="tips">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        是否启用：</label>
+                </div>
+                <div class="field">
+                    <div class="button-group radio">
+                        <label id="isTrue" class="button active">
+                            <span class="icon icon-check"></span>
+                            <input name="pstate" value="1" type="radio" checked="checked">是
+                        </label>
+                        <label id="isFalse" class="button">
+                            <span class="icon icon-times"></span>
+                            <input name="pstate" value="2" type="radio">否
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                    </label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main icon-check-square-o" type="button">
+                        提交</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <script src="../Scripts/jquery.js" type="text/javascript"></script>
+    <script src="../Scripts/pintuer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var type = 'add';
+            var url = window.location.href;
+            var newurl = url.substring(url.indexOf('?') + 1);
+            var urlArr = newurl.split('&');
+            if (urlArr.length == 2) {
+                type = 'update';
+                $("#add strong").html("<span class=\"icon-pencil-square-o\"></span>修改专业");
+                $.getJSON('../Ajax/sys_ProfessionalManager.ashx?' + newurl, function (msg) {
+                    $("input[name='pid']").val(msg.ProfessionalId);
+                    $("input[name='pname']").val(msg.ProfessionalName);
+                    if (msg.ProfessionalState == "1") {
+                        $("#isTrue").addClass("active");
+                        $("#isTrue input[type='radio']").prop("checked", true);
+                        $("#isFalse").removeClass("active");
+                        $("#isFalse input[type='radio']").prop("checked", false);
+                    } else {
+                        $("#isTrue").removeClass("active");
+                        $("#isTrue input[type='radio']").prop("checked", false);
+                        $("#isFalse").addClass("active");
+                        $("#isFalse input[type='radio']").prop("checked", true);
+                    }
+                });
+            }
+            $(":checkbox").click(function () {
+                if ($(this).prop("checked") != undefined) {
+                    $(this).siblings().prop("checked", false);
+                    $(this).prop("checked", true);
+                }
+            });
+
+            $("button").click(function () {
+                $("form :input").trigger('blur');
+                var numError = $("form .check-error").length;
+                if (numError) {
+                    return false;
+                } else {
+                    var data = $("form").serialize(); 
+                    //console.info('../Ajax/sys_ProfessionalManager.ashx?type=' + type);
+                    $.post('../Ajax/sys_ProfessionalManager.ashx?type=' + type, data, function (res) {
+                        var result = $.parseJSON(res);
+                        if (result && result.Success == "True") {
+                            alert(result.Msg);
+                            window.location.href = "professionalList.html";
+                        } else {
+                            alert(result.Msg);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+</body>
+</html>

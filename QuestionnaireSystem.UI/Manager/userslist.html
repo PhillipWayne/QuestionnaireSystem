@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>行企评学系统</title>
+    <link rel="stylesheet" href="../Styles/pintuer.css">
+    <link rel="stylesheet" href="../Styles/admin.css">
+    <link href="../Styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="panel admin-panel">
+        <div class="panel-head">
+            <strong class="icon-reorder">用户管理</strong></div>
+        <div class="padding border-bottom">
+            <ul class="search">
+                <li><a class="button border-green" id="checkall" href="addUser.html?type=add"><span
+                    class="icon-check"></span>添加</a> </li>
+            </ul>
+        </div>
+        <table class="table table-hover text-center">
+            <tr class="thead">
+                <th width="120">
+                    用户编号
+                </th>
+                <th>
+                    用户名
+                </th>
+                <th>
+                    用户密码
+                </th>
+                <th>
+                    真实姓名
+                </th>
+                <th>
+                    所属企业
+                </th>
+                <th width="25%">
+                    用户类型
+                </th>
+                <th width="120">
+                    用户状态
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <ul class="pagination" id="pagination1">
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script src="../Scripts/jquery.js" type="text/javascript"></script>
+    <script src="../Scripts/pintuer.js" type="text/javascript"></script>
+    <script src="../Scripts/jqPaginator.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //var total = 4;
+        var pSize = 10;
+        var page = 1;
+        var initFlag = true;
+        var load = function (no, size) {
+            $.getJSON('../Ajax/sys_UsersManager.ashx?type=get&pno=' + no + '&psize=' + size, function (msg) {
+                if (msg && msg.total > 0) {
+                    if (initFlag) {
+                        $("#pagination1").jqPaginator({
+                            totalCounts: msg.total,
+                            visiblePages: 10,
+                            pageSize: pSize,
+                            currentPage: no,
+                            first: '<li class="first"><a href="javascript:void(0);">首页<\/a><\/li>',
+                            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"><\/i>上一页<\/a><\/li>',
+                            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"><\/i><\/a><\/li>',
+                            last: '<li class="last"><a href="javascript:void(0);">末页<\/a><\/li>',
+                            page: '<li class="page"><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+                            onPageChange: function (num, type) {
+                                if (type == "change") {
+                                    load(num, pSize);
+                                }
+                            }
+                        });
+                    }
+                    loadDataList(msg.rows);
+                } else {
+                    initFlag = false;
+                }
+            });
+
+        }
+        $(function () {
+            load(1, pSize)
+        });
+        function loadDataList(data) {
+            $("tr").remove(".list");
+            for (i = data.length - 1; i >= 0; i--) {
+                var s = "";
+                s += "<tr class='list'>";
+                s += "<td>" + data[i].UserId + "</td>";
+                s += "<td>" + data[i].UserName + "</td>";
+                s += "<td>******</td>";
+                s += "<td>" + data[i].RealName + "</td>";
+                s += "<td>" + data[i].CompanyName + "</td>";
+                s += "<td>" + (data[i].UserType == 1 ? "管理员" : "企业用户") + "</td>";
+                s += "<td>" + (data[i].UserState == 1 ? "正常" : "停用") + "</td>";
+                s += "<td><div class='button-group'><a class='button border-green' onclick=\"Edit(" + data[i].UserId + ")\"><span class='icon-edit'></span>修改</a><a class='button border-red' onclick=\"Del(" + data[i].UserId + ")\"><span class='icon-trash-o'></span>" + (data[i].UserState == 1 ? "停用" : "启用") + "</a></div></td>";
+                s += "</tr>";
+                $("tr.thead").after(s);
+            }
+        }
+
+        function Del(id) {
+            if (confirm("您确定要执行操作吗?")) {
+                $.get('../Ajax/sys_UsersManager.ashx?type=del', 'uid=' + id, function (msg) {
+                    var result = $.parseJSON(msg);
+                    if (result && result.Success == "True") {
+                        alert(result.Msg);
+                        load(1,pSize);
+                    } else {
+                        alert(result.Msg);
+                    }
+                });
+            }
+        }
+
+        function Edit(id) {
+            window.location.href = "addUser.html?type=edit&uid=" + id;
+        }
+    </script>
+</body>
+</html>

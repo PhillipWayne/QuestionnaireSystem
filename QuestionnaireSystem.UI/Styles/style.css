@@ -1,0 +1,24 @@
+﻿body {
+    background: #f8f8f8;
+    text-align: center;
+    color: #fff;
+	font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;
+}
+
+.page-container {
+	width:100%;
+	height:auto;
+    margin: 0 auto;
+}
+
+.connect {
+    width: 80%;
+    margin: 35px auto 0 auto;
+    font-size: 18px;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+
+
+

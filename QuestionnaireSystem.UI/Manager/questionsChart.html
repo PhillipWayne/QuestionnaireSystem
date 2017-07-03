@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>行企评学系统</title>
+    <link rel="stylesheet" href="../Styles/pintuer.css">
+</head>
+<body>
+    <div class="panel admin-panel">
+        <div class="panel-head" id="add">
+            <strong><span class="icon-pencil-square-o">评学统计</span> </strong>
+        </div>
+        <div class="body-content">
+            <form class="form-x">
+            <div class="form-group">
+                <div class="label" style="width: 5%; margin-top: 3px;">
+                    <label>
+                        题目</label>
+                </div>
+                <div class="field" style="width: 28%;">
+                    <select name="qid" id="qid" class="input">
+                        <option value="1">一、您认为该学生总体的思想道德品质：</option>
+                        <option value="2">二、您认为该学生的综合工作能力如何：</option>
+                        <option value="3">三、您认为该学生的知识水平：</option>
+                        <option value="4">四、您认为该学生工作专业技能如何：</option>
+                        <option value="5">五、您认为该学生的身体素质和心理素质如何？</option>
+                        <option value="6">六、您认为该学生团队精神如何？</option>
+                        <option value="7">七、您从总体来看，该学生学习情况如何？</option>
+                        <option value="8">八、您认为该学生的管理水平如何？</option>
+                        <option value="9">九、您认为该学生的创新能力如何？</option>
+                        <option value="10">十、与其他院（校）的学生相比较，您认为该学生的综合素质:</option>
+                        <option value="11">十一、您认为该专业学生在学院应重点加强:</option>
+                    </select>
+                </div>
+                <div class="label" style="width: 5%; margin-top: 3px;">
+                    <label>
+                        年份:</label>
+                </div>
+                <div class="field" style="width: 8%;">
+                    <select name="year" id="year" class="input">
+                    </select>
+                </div>
+                <div class="label" style="width: 5%; margin-top: 3px;">
+                    <label>
+                        专业:</label>
+                </div>
+                <div class="field" style="width: 10%;">
+                    <select name="pid" id="pid" class="input">
+                        <option value="0">请选择分类</option>
+                    </select>
+                </div>
+                <div class="label" style="width: 8%; margin-top: 3px;">
+                    <label>
+                        图标类型</label>
+                </div>
+                <div class="field" style="width: 10%;">
+                    <select name="type" id="type" class="input">
+                        <option value="0" selected>饼图</option>
+                        <option value="1">柱状图</option>
+                    </select>
+                </div>
+                <div class="field" style="width: 10%;">
+                    <button class="button bg-main icon-check-square-o" type="button" id="btnTotal" style="margin-top: 4px;
+                        margin-left: 10px;">
+                        统计</button>
+                </div>
+            </div>
+            </form>
+            <div style="margin: 20px auto; padding: 0;">
+                <div id="divPie" style="width: 800px; height:400px; margin: 10 auto; padding: 0;">
+                </div>
+                <div id="divCategory" style="width: 800px; height:400px; margin: 10 auto; padding: 0; display:none;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery.js" type="text/javascript"></script>
+    <script src="../Scripts/jQuery.cookie.js" type="text/javascript"></script>
+    <script src="../Scripts/echarts.common.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var s = [
+                ["优", "良", "合格", "不合格"],
+                ["优", "良", "合格", "不合格"],
+                ["专业知识深厚，其他知识广博", "专业知识深厚，其他知识欠缺", "专业知识缺乏，其他知识广博", "专业知识和其他知识很缺乏"],
+                ["优", "良", "合格", "不合格"],
+                ["优", "良", "合格", "不合格"],
+                ["很好", "较好", "一般", "较差"],
+                ["非常刻苦地学习，有很强的事业心、进取心", "能够不断地学习，认真做好本职工作", "学习不多，仅仅是保持原有的水平", "不学习，不思进取，在工作岗位上混日子"],
+                ["很强", "较强", "一般", "较差", "很差"],
+                ["很强", "较强", "一般", "较差", "很差"],
+                ["较强", "差不多", "较差", "很差"],
+                ["专业知识的学习", "职业素质的培养", "其他知识的学习", "学习与人交往能力", "加强文体训练"]
+        ];
+        $(function () {
+            var Year = new Date().getFullYear();
+            for (var i = 0; i < 3; i++) {
+                var str1 = "<option value='" + (Year - i) + "'>" + (Year - i) + "年</option>";
+                $("#year").append(str1);
+            }
+
+            $.getJSON('../Ajax/sys_ProfessionalManager.ashx?type=select', function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option value='" + msg.rows[i].ProfessionalId + "'>" + msg.rows[i].ProfessionalName + "</option>";
+                    $("#pid").append(s);
+                }
+            });
+            $("#btnTotal").click(function () {
+                var data = $("form").paramMap(); //{"stunumber":"张三","stupro":1,....}
+                var number = s[data.qid - 1].length;
+                var ms = { "num": number };
+                var paras = $.extend(true, ms, data);
+                $.post('../Ajax/sys_QuestionsManager.ashx?type=chart', paras, function (msg) {
+                    var result = $.parseJSON(msg);
+                    if (data.type == "0") {
+                        option.legend.data = s[data.qid - 1];
+                        var seriesData = [];
+                        var i = 0;
+                        for (var x in result[0]) {
+                            seriesData.push({ value: result[0][x], name: s[data.qid - 1][i] });
+                            i++;
+                        }
+                        option.series[0].data = seriesData;
+                        option.title.text = $("#qid").find("option:selected").text();
+                        divPie.setOption(option);
+                        $("#divPie").css("display","block");
+                        $("#divCategory").css("display","none");
+                    } else {
+                        option2.xAxis[0].data = s[data.qid - 1];
+                        var seriesData = [];
+                        for (var x in result[0]) {
+                            seriesData.push(result[0][x]);
+                        }
+                        option2.series[0].data = seriesData;
+                        option2.title.text = $("#qid").find("option:selected").text();
+                        divCategory.setOption(option2);
+                        $("#divPie").css("display", "none");
+                        $("#divCategory").css("display", "block");
+                    }
+                });
+
+            });
+
+        });
+        var divPie = echarts.init(document.getElementById("divPie"));
+        var divCategory = echarts.init(document.getElementById("divCategory"));
+        //饼图配置参数
+        var option = {
+            title: {
+                text: '行企评学系统',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: []
+            },
+            series: [
+            {
+                name: '选项数据',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+            ]
+        };
+
+
+        var option2 = {
+            title:{
+                text:''
+            },
+            color: ['#3398DB'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+            {
+                type: 'category',
+                data: [],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }
+            ],
+            yAxis: [
+            {
+                type: 'value'
+            }
+            ],
+            series: [
+                {
+                    name: '直接访问',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: []
+                }
+            ]
+        };
+    </script>
+</body>
+</html>

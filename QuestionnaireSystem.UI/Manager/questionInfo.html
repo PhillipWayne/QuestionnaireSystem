@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>行企评学系统</title>
+    <link rel="stylesheet" href="../Styles/pintuer.css">
+    <link rel="stylesheet" href="../Styles/info.css">
+    <style type="text/css">
+        .button
+        {
+            padding: 10px 15px;
+            line-height: 20px;
+        }
+        .dis
+        {
+            float: left;
+            width: 100px;
+            font-size: 16px;
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+        .style2
+        {
+            float: left;
+            width: 250px;
+        }
+        .panel
+        {
+            background-color: Transparent;
+        }
+    </style>
+</head>
+<body>
+    <form id="question">
+    <div id="divContent" class="panel admin-panel">
+        <div class="panel-head" style="text-align: center;">
+            <strong style="font-size: 30px; margin-right: 20px; text-align: center;"><span class="icon-pencil-square-o">
+            </span>行企评学系统-问卷调查 </strong>
+        </div>
+        <div class="panel-head">
+            <strong style="font-size: 20px;">专业:</strong>
+            <label id="stuPro" style="font-size: 20px; margin-right: 20px;">
+            </label>
+            <strong style="font-size: 20px;">学号:</strong>
+            <label id="stuNumber" style="font-size: 20px; margin-right: 10px">
+            </label>
+            <strong style="font-size: 20px;">姓名:</strong>
+            <label id="stuName" style="font-size: 20px; margin-right: 10px;">
+            </label>
+        </div>
+        <div class="body-content">
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        一、您认为该学生总体的思想道德品质：</label>
+                </div>
+                <div class="field">
+                    (1)优<input type="checkbox" name="Example1" value="1" />
+                    (2)良<input type="checkbox" name="Example1" value="2" />
+                    (3)合格<input type="checkbox" name="Example1" value="3" />
+                    (4)不合格<input type="checkbox" name="Example1" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        二、您认为该学生的综合工作能力如何：
+                    </label>
+                </div>
+                <div class="field">
+                    (1)优<input type="checkbox" name="Example2" value="1" />
+                    (2)良<input type="checkbox" name="Example2" value="2" />
+                    (3)合格<input type="checkbox" name="Example2" value="3" />
+                    (4)不合格<input type="checkbox" name="Example2" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        三、您认为该学生的知识水平：</label>
+                </div>
+                <div class="field">
+                    (1)专业知识深厚，其他知识广博<input type="checkbox" name="Example3" value="1" />
+                    (2)专业知识深厚，其他知识欠缺<input type="checkbox" name="Example3" value="2" /><br />
+                    (3)专业知识缺乏，其他知识广博<input type="checkbox" name="Example3" value="3" />
+                    (4)专业知识和其他知识很缺乏<input type="checkbox" name="Example3" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        四、您认为该学生工作专业技能如何：</label>
+                </div>
+                <div class="field">
+                    (1)优<input type="checkbox" name="Example4" value="1" />
+                    (2)良<input type="checkbox" name="Example4" value="2" />
+                    (3)合格<input type="checkbox" name="Example4" value="3" />
+                    (4)不合格<input type="checkbox" name="Example4" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        五、您认为该学生的身体素质和心理素质如何？</label>
+                </div>
+                <div class="field">
+                    (1)优<input type="checkbox" name="Example5" value="1" />
+                    (2)良<input type="checkbox" name="Example5" value="2" />
+                    (3)合格<input type="checkbox" name="Example5" value="3" />
+                    (4)不合格<input type="checkbox" name="Example5" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        六、您认为该学生团队精神如何？</label>
+                </div>
+                <div class="field">
+                    (1)很好<input type="checkbox" name="Example6" value="1" />
+                    (2)较好<input type="checkbox" name="Example6" value="2" />
+                    (3)一般<input type="checkbox" name="Example6" value="3" />
+                    (4)较差<input type="checkbox" name="Example6" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        七、您从总体来看，该学生学习情况如何？</label>
+                </div>
+                <div class="field">
+                    (1)非常刻苦地学习，有很强的事业心、进取心<input type="checkbox" name="Example7" value="1" />
+                    (2)能够不断地学习，认真做好本职工作<input type="checkbox" name="Example7" value="2" /><br />
+                    (3)学习不多，仅仅是保持原有的水平<input type="checkbox" name="Example7" value="3" />
+                    (4)不学习，不思进取，在工作岗位上混日子<input type="checkbox" name="Example7" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        八、您认为该学生的管理水平如何？</label>
+                </div>
+                <div class="field">
+                    (1)很强<input type="checkbox" name="Example8" value="1" />
+                    (2)较强<input type="checkbox" name="Example8" value="2" />
+                    (3)一般<input type="checkbox" name="Example8" value="3" />
+                    (4)较差<input type="checkbox" name="Example8" value="4" />
+                    (5)很差<input type="checkbox" name="Example8" value="5" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        九、您认为该学生的创新能力如何？</label>
+                </div>
+                <div class="field">
+                    (1)很强<input type="checkbox" name="Example9" value="1" />
+                    (2)较强<input type="checkbox" name="Example9" value="2" />
+                    (3)一般<input type="checkbox" name="Example9" value="3" />
+                    (4)较差<input type="checkbox" name="Example9" value="4" />
+                    (5)很差<input type="checkbox" name="Example9" value="5" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        十、与其他院（校）的学生相比较，您认为该学生的综合素质：</label>
+                </div>
+                <div class="field">
+                    (1)较强<input type="checkbox" name="Example10" value="1" />
+                    (2)差不多<input type="checkbox" name="Example10" value="2" />
+                    (3)较差<input type="checkbox" name="Example10" value="3" />
+                    (4)很差<input type="checkbox" name="Example10" value="4" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        十一、您认为该专业学生在学院应重点加强（可多选）</label>
+                </div>
+                <div class="field">
+                    (1)专业知识学习<input type="checkbox" name="Example11" value="1" />
+                    (2)职业素质的培养<input type="checkbox" name="Example11" value="2" /><br />
+                    (3)其他知识的学习<input type="checkbox" name="Example11" value="3" />
+                    (4)学习与人交往能力<input type="checkbox" name="Example11" value="4" /><br />
+                    (5)加强文体训练<input type="checkbox" name="Example11" value="5" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>
+                        十二、您对我校该专业人才培养有何建议？</label>
+                </div>
+                <div class="field">
+                    <textarea id="OtherOpinion" name="suggestion" class="input" disabled="disabled" style="width: 80%;" ></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel admin-panel">
+        <div class="body-content">
+            <div class="field">
+                <a class="button bg-main icon-check-square-o" href="javascript:prn1_preview()">打印</a>
+                <a class="button bg-main icon-check-square-o" href="questionsList.html">返回</a>
+            </div>
+        </div>
+    </div>
+    </form>
+    <script src="../Scripts/jquery.js" type="text/javascript"></script>
+    <script src="../Scripts/LodopFuncs.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var url = window.location.href;
+            var newurl = url.substring(url.indexOf('?') + 1);
+            $.getJSON('../Ajax/sys_QuestionsManager.ashx?' + newurl, function (msg) {
+                $("#stuPro").text(msg.ProfessionalName);
+                $("#stuNumber").text(msg.StudentNumber);
+                $("#stuName").text(msg.StudentName);
+                $("#OtherOpinion").val(msg.OtherOpinion);
+                $("input[type='checkbox']").attr("disabled","disabled")
+                for (var x in msg) {
+                    var s = msg[x].split(',');
+                    for (var y in s) {
+                        $("input[name='"+x+"'][value='" +s[y] + "']").attr('checked', true);
+                    }
+                }
+                
+            });
+        });
+        var LODOP;
+        function prn1_preview(){
+            LODOP = getLodop();
+            LODOP.PRINT_INIT("评学系统打印");
+            var strStyleCSS = "<link href='../Styles/pintuer.css' type='text/css' rel='stylesheet' />";
+            strStyleCSS += "<link href='../Styles/info.css' type='text/css' rel='stylesheet' />";
+            var strFormHtml =strStyleCSS+"<body>"+$("#divContent").html()+"</body>";
+            LODOP.ADD_PRINT_HTM(0,0,"100%","100%",strFormHtml);
+            LODOP.PREVIEW();
+        }
+    </script>
+</body>
+</html>
